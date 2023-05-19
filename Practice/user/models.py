@@ -62,3 +62,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     # Метод для отображения в админ панели
     def __str__(self):
         return self.email
+    
+class SomeData(models.Model):
+    id_someUser = models.IntegerField()
+    someData = models.CharField(max_length=255)
+    def __str__(self):
+        return self.email

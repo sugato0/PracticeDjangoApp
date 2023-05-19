@@ -40,6 +40,10 @@ INSTALLED_APPS = [
     'djoser',
     'rest_framework',
     "user.apps.UserConfig",
+    'rest_framework.authtoken',
+    
+    
+    
 ]
 
 MIDDLEWARE = [
@@ -50,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
 ]
 
 ROOT_URLCONF = 'Practice.urls'
