@@ -49,7 +49,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     
     mobile = models.BigIntegerField(blank=True,default=89888880900)
     mobile_verified = models.BooleanField(default=False)
-    site_id = models.BigIntegerField(blank=True,default=-1)
+    site_id = models.ManyToManyField("Site", verbose_name=("id"))
 
     activation_key = models.CharField(max_length=40)
     key_expires = models.DateTimeField(default=timezone.now)
@@ -62,7 +62,46 @@ class User(AbstractBaseUser, PermissionsMixin):
     # Метод для отображения в админ панели
     def __str__(self):
         return self.email
+
+class Blocks(models.Model):
+    id = models.AutoField(primary_key=True)
+    css = models.JSONField(null=True,blank=True)
+    html = models.JSONField(null=True,blank=True)
+    js = models.JSONField(null=True,blank=True)
+    item_id = models.ForeignKey("Items", verbose_name=("id"), on_delete=models.DO_NOTHING)
+class Items(models.Model):
+    id = models.AutoField(primary_key=True,unique=True)
+    item = models.CharField(max_length=100,default=None)
+class Updates(models.Model):
+    update_time = models.TimeField(auto_now_add=True)
+    blocks_id = models.ForeignKey("Blocks", verbose_name=("id"), on_delete=models.DO_NOTHING)
+class Site(models.Model):
+    id = models.AutoField(primary_key=True,unique=True)
+    update_id = models.ForeignKey("Updates", verbose_name=("id"), on_delete=models.DO_NOTHING)
+
+class User_profile(models.Model):
+    User_profile_id = models.OneToOneField("User", verbose_name=("id"), on_delete=models.CASCADE)
     
+    
+class Settings(models.Model):
+    User_profile_id = models.OneToOneField("User", verbose_name=("id"), on_delete=models.CASCADE)
+    
+    thema_id = models.ForeignKey("Themas",on_delete=models.DO_NOTHING)
+    notifications = models.CharField(max_length=100)
+    language_id = models.ForeignKey("Language",on_delete=models.DO_NOTHING)
+
+class Language(models.Model):
+    id = models.AutoField(primary_key=True,unique=True)
+    language = models.CharField(max_length=100,default=None)
+
+class Themas(models.Model):
+    id = models.AutoField(primary_key=True,unique=True)
+    thema = models.CharField(max_length=100,default=None)
+
+
+
+
+
 class SomeData(models.Model):
     id_someUser = models.IntegerField()
     someData = models.CharField(max_length=255)
